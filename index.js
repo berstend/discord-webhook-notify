@@ -19,10 +19,6 @@ const long_severity = {
 
 async function getDefaultDescription() {
   const context = github.context
-  /**
-   * @typedef {import('@actions/github/lib/context').Context} Context
-   * @type {Context}
-   */
   const payload = context.payload
 
   switch (github.context.eventName) {

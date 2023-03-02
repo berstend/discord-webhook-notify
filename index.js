@@ -26,40 +26,42 @@ async function getDefaultDescription() {
   const payload = context.payload
 
   switch (github.context.eventName) {
-    case "push":
-      return (
-        `- **Event:** ${context.eventName}\n` +
-        `- **Repo:** ${payload.repository.full_name}\n` +
-        `- **Ref:** ${payload.ref}\n` +
-        `- **Workflow:** ${context.workflow}\n` +
-        `- **Author:** ${payload.head_commit.author.name}\n` +
-        `- **Committer:** ${payload.head_commit.committer.name}\n` +
-        `- **Pusher:** ${payload.pusher.name}\n` +
-        `- **Commit URL:** ${payload.head_commit.url}\n` +
-        `- **Commit Message:** ${payload.head_commit.message}\n`
-      )
-    case "release":
-      return `- **Event:** ${context.eventName}\n` +
-        `- **Repo:** ${payload.repository.full_name}\n` +
-        `- **Action:** ${payload.action}\n` +
-        `- **Name**: ${payload.release.name}\n` +
-        `- **Author:** ${payload.release.author.login}\n` +
-        `- **Tag:** ${payload.release.tag_name}` +
-        payload.release.prerelease
-        ? " (pre-release)"
-        : "" + "\n" + `- **Url:** ${payload.release.url}`
+    // case "push":
+    //   return (
+    //     `- **Event:** ${context.eventName}\n` +
+    //     `- **Repo:** ${payload.repository.full_name}\n` +
+    //     `- **Ref:** ${payload.ref}\n` +
+    //     `- **Workflow:** ${context.workflow}\n` +
+    //     `- **Author:** ${payload.head_commit.author.name}\n` +
+    //     `- **Committer:** ${payload.head_commit.committer.name}\n` +
+    //     `- **Pusher:** ${payload.pusher.name}\n` +
+    //     `- **Commit URL:** ${payload.head_commit.url}\n` +
+    //     `- **Commit Message:** ${payload.head_commit.message}\n`
+    //   )
+    // case "release":
+    //   return `- **Event:** ${context.eventName}\n` +
+    //     `- **Repo:** ${payload.repository.full_name}\n` +
+    //     `- **Action:** ${payload.action}\n` +
+    //     `- **Name**: ${payload.release.name}\n` +
+    //     `- **Author:** ${payload.release.author.login}\n` +
+    //     `- **Tag:** ${payload.release.tag_name}` +
+    //     payload.release.prerelease
+    //     ? " (pre-release)"
+    //     : "" + "\n" + `- **Url:** ${payload.release.url}`
     default:
       return `
 - **Event:** ${context.eventName}
-- **Repo:** ${payload.repository.full_name}
+- **Repo:** ${payload.repository?.full_name}
 - **Ref**: ${context.ref}
 - **Base ref**: ${context.base_ref}
 - **Workflow**: ${context.workflow}
-- **Author:** ${payload.head_commit.author.name}
-- **Committer:** ${payload.head_commit.committer.name}
+- **Author:** ${payload.head_commit?.author?.name}
+- **Pusher:** ${payload.pusher?.name}
+- **Committer:** ${payload.head_commit?.committer?.name}
 - **Commit SHA**: ${context.sha}
-- **Commit Message:** ${payload.head_commit.message}
-- **Run:** https://github.com/${payload.repository.full_name}/actions/runs/${payload.run_id}
+- **Commit URL:** ${payload.head_commit?.url}
+- **Commit Message:** ${payload.head_commit?.message}
+- **Run:** https://github.com/${payload.repository?.full_name}/actions/runs/${payload.run_id}
       `.trim()
   }
 }
